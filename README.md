@@ -109,3 +109,65 @@ aztec
 ```
 
 ---
+
+## 3. Update Aztec
+
+```bash
+aztec-up 2.0.2
+```
+
+---
+
+## 4. Obtain RPC URLs
+
+-   Find a 3rd party that supports Sepolia `RPC URL` & Sepolia `BEACON URL` APIs.
+-   Most of your usage is `RPC URL`. I recommend to use [Alchemy](https://dashboard.alchemy.com/) for `RPC URL` & Use [drpc](https://drpc.org/) for `Beacon URL`.
+
+**More details on RPC solutions**:
+
+### Get Your Own RPC by Running Geth & Prysm Nodes
+
+-   You can run your own local RPC nodes by following this guide: [geth-prysm-node](https://github.com/0xmoei/geth-prysm-node). You may need 600-1000 GB SSD
+
+### Free:
+
+-   `RPC URL`: Create a Sepolia Ethereum HTTP API in [Alchemy](https://dashboard.alchemy.com/)
+-   `BEACON RPC`: Create an account on [drpc](https://drpc.org/) and search for `Sepolia Ethereum Beacon Chain ` Endpoints.
+
+![image](https://github.com/user-attachments/assets/eae865ab-461f-46cd-b3f9-b7d118dcbbdf)
+
+### Paid:
+
+For example: [Ankr](https://www.ankr.com/rpc/?utm_referral=LqL9Sv86Te) is supporting `RPC URL` & `Beacon URL`. You can Register, Fund it with a little USDT via your wallet, Create a project, get your normal **sepolia rpc** and **beacon sepolia rpc**.
+
+#### Note: Sometimes 3rd party websites might fail, even when you pay. It's best to host one yourself as long as your VPS/Machine is the required spec.
+
+![image](https://github.com/user-attachments/assets/cfde5dec-ac1a-4d58-855b-43c4374c5c87)
+
+![image](https://github.com/user-attachments/assets/ffb97518-cd24-46ee-b131-92b2870ac407)
+
+> You can run your own Geth & Prysm nodes to get your own `RPC URL` & `BEACON RPC` or find any other 3rd party solutions
+
+---
+
+## 5. Generate Ethereum Keys
+
+Get an EVM Wallet with `Private Key` and `Public Address` saved. (Burner wallet)
+
+---
+
+## 6. Get Sepolia ETH
+
+Fund your Ethereum Wallet with `ETH Sepolia`
+
+---
+
+## 7. Find IP
+
+```bash
+curl ipv4.icanhazip.com
+```
+
+-   Save it
+
+---
