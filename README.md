@@ -171,3 +171,104 @@ curl ipv4.icanhazip.com
 -   Save it
 
 ---
+
+## 8. Enable Firewall & Open Ports
+
+```console
+# Firewall
+ufw allow 22
+ufw allow ssh
+ufw enable
+
+# Sequencer
+ufw allow 40400
+ufw allow 8080
+```
+
+---
+
+## 9. Run Sequencer Node
+
+You can run Sequencer Node through one of these two methods: `Docker` or `CLI`
+
+### Method 1: Run via Docker
+
+-   Delete CLI Node
+
+```bash
+# Stop docker containers
+docker stop $(docker ps -q --filter "ancestor=aztecprotocol/aztec") && docker rm $(docker ps -a -q --filter "ancestor=aztecprotocol/aztec")
+
+# Stop screens
+screen -ls | grep -i aztec | awk '{print $1}' | xargs -I {} screen -X -S {} quit
+```
+
+-   Create `aztec` directory:
+
+```bash
+mkdir aztec
+```
+
+-   Get into `aztec` directory:
+
+```bash
+cd aztec
+```
+
+-   Create `.env`
+
+```bash
+nano .env
+```
+
+-   Replace the following code in `.env`
+
+```env
+ETHEREUM_RPC_URL=RPC_URL
+CONSENSUS_BEACON_URL=BEACON_URL
+VALIDATOR_PRIVATE_KEY=0xYourPrivateKey
+COINBASE=0xYourAddress
+P2P_IP=P2P_IP
+```
+
+-   Replace the following variables before you Run Node:
+
+    -   `RPC_URL` & `BEACON_URL`: Step 4
+    -   `0xYourPrivateKey`: Your EVM wallet private key starting with `0x...`
+    -   `0xYourAddress`: Your EVM wallet public address starting with `0x...`
+    -   `P2P_IP`: Your server IP (Step 7)
+
+-   Create `docker-compose.yml`:
+
+```bash
+nano docker-compose.yml
+```
+
+-   Replace the following code in `docker-compose.yml`
+
+```yml
+services:
+    aztec-node:
+        container_name: aztec-sequencer
+        network_mode: host
+        image: aztecprotocol/aztec:latest
+        restart: unless-stopped
+        environment:
+            ETHEREUM_HOSTS: ${ETHEREUM_RPC_URL}
+            L1_CONSENSUS_HOST_URLS: ${CONSENSUS_BEACON_URL}
+            DATA_DIRECTORY: /data
+            VALIDATOR_PRIVATE_KEY: ${VALIDATOR_PRIVATE_KEY}
+            COINBASE: ${COINBASE}
+            P2P_IP: ${P2P_IP}
+            LOG_LEVEL: debug
+        entrypoint: >
+            sh -c 'node --no-warnings /usr/src/yarn-project/aztec/dest/bin/index.js start --network testnet --node --archiver --sequencer'
+        ports:
+            - 40400:40400/tcp
+            - 40400:40400/udp
+            - 8080:8080
+        volumes:
+            - /root/.aztec/testnet/data/:/data
+```
+
+Note: My node data directory configued in `docker-compose.yml` is `/root/.aztec/testnet/data/`, yours can be anything.
