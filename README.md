@@ -272,3 +272,293 @@ services:
 ```
 
 Note: My node data directory configued in `docker-compose.yml` is `/root/.aztec/testnet/data/`, yours can be anything.
+
+-   Run Node Docker:
+
+```bash
+docker compose up -d
+```
+
+-   Node Logs:
+
+```bash
+docker compose logs -fn 1000
+```
+
+-   Optional: Stop and Kill Node
+
+```bash
+docker compose down -v
+```
+
+-   Done, you can now head to Step 10.
+
+### Method 2: Run via CLI
+
+-   Open screen
+
+```bash
+screen -S aztec
+```
+
+-   Run Node
+
+```
+aztec start --node --archiver --sequencer \
+  --network testnet \
+  --l1-rpc-urls RPC_URL  \
+  --l1-consensus-host-urls BEACON_URL \
+  --sequencer.validatorPrivateKey 0xYourPrivateKey \
+  --sequencer.coinbase 0xYourAddress \
+  --p2p.p2pIp IP
+```
+
+Replace the following variables before you Run Node:
+
+-   `RPC_URL` & `BEACON_URL`: Step 4
+-   `0xYourPrivateKey`: Your EVM wallet private key starting with `0x...`
+-   `0xYourAddress`: Your EVM wallet public address starting with `0x...`
+-   `IP`: Your server IP (Step 7)
+
+### Optional Commands:
+
+**Screen Commands:**
+
+-   Minimze screen: `Ctrl` + `A` + `D`
+-   Return to screen: `screen -r aztec`
+-   Kill screen (when inside): `Ctrl`+`C+
+-   Kill screen (when outside): `screen -XS aztec quit`
+
+---
+
+## 10. Sync Node
+
+After entering the command, your node starts running, It takes a few minutes for your node to get synced.
+
+-   Check the latest synced block number of your sequencer:
+
+```
+curl -s -X POST -H 'Content-Type: application/json' \
+-d '{"jsonrpc":"2.0","method":"node_getL2Tips","params":[],"id":67}' \
+http://localhost:8080 | jq -r ".result.proven.number"
+```
+
+-   Check the latest block number of Aztec network: https://aztecscan.xyz/
+
+---
+
+## 11. Register Validator
+
+Make sure your Sequencer node is fully synced, before you proceed with Validator registration.
+
+**Official Validator Registration: ZKPassport**
+
+-   Visit: https://testnet.aztec.network/add-validator
+-   Complete ZKPassport humanity verification
+-   Follow the steps to connect your validator wallet and register your validator on the network
+-   After competion, you will get into the queue of validator registration and will earn **Explorer** discord role
+
+---
+
+## 12. Aztec Dashboard
+
+-   Visit the [Dashboard](https://dashtec.xyz/)
+-   Check your validators health
+-   Connect your X & Discord
+
+---
+
+## 🔃 Update Sequencer Node
+
+### Update docker-compose method Nodes
+
+1- Stop node
+
+```console
+docker stop $(docker ps -q --filter "ancestor=aztecprotocol/aztec") && docker rm $(docker ps -a -q --filter "ancestor=aztecprotocol/aztec")
+
+# Or
+
+cd aztec
+docker compose down -v
+```
+
+2- Update CLI commands
+
+```bash
+source ~/.bashrc
+aztec-up 2.0.2
+```
+
+3- Pull the latest docker image:
+
+```bash
+docker pull aztecprotocol/aztec:latest
+```
+
+4- Delete old `alpha-testnet` data
+
+```bash
+rm -rf ~/.aztec/alpha-testnet/data/
+```
+
+5- Update `alpha-testnet` to `testnet` in `docker-compose.yml`
+
+```bash
+nano docker-compose.yml
+```
+
+-   We update the `network` and the new `volume` directory to `testnet`
+-   Ensure your `image:` is `aztecprotocol/aztec:latest` or `aztecprotocol/aztec:2.0.2`
+
+<img width="1271" height="205" alt="image" src="https://github.com/user-attachments/assets/6007268a-171d-42ce-9ab2-34f5dc076d7f" />
+
+<img width="1350" height="398" alt="image" src="https://github.com/user-attachments/assets/45f43023-6a4d-4ef8-9e75-f31572dcc76e" />
+
+6- Rerun your node
+
+```
+docker compose up -d
+```
+
+-   Make sure you are in `aztec` directory where `docker-compose.yml` file exists.
+-   You can read the full details of running the node via [docker compose](#method-1-run-via-docker)
+
+#
+
+### Update CLI method Nodes
+
+1- Stop node
+
+```
+screen -ls | grep -i aztec | awk '{print $1}' | xargs -I {} screen -X -S {} quit
+```
+
+-   Or manually stop the screen session you are running your node in it
+
+2- Update CLI commands
+
+```bash
+source ~/.bashrc
+aztec-up 2.0.2
+```
+
+3- Delete old `alpha-testnet` data
+
+```bash
+rm -rf ~/.aztec/alpha-testnet/data/
+```
+
+4- Rerun using this CLI command
+
+```bash
+aztec start --node --archiver --sequencer \
+  --network testnet \
+  --l1-rpc-urls RPC_URL  \
+  --l1-consensus-host-urls BEACON_URL \
+  --sequencer.validatorPrivateKey 0xYourPrivateKey \
+  --sequencer.coinbase 0xYourAddress \
+  --p2p.p2pIp IP
+```
+
+Replace the following variables before you Run the node:
+
+-   `RPC_URL` & `BEACON_URL`: Step 4
+-   `0xYourPrivateKey`: Your EVM wallet private key starting with `0x...`
+-   `0xYourAddress`: Your EVM wallet public address starting with `0x...`
+-   `IP`: Your server IP (Step 7)
+
+---
+
+## Run Multiple Validators
+
+This step seems limited to only teams and individuals in active set. Team is encouraging teams to run 10 validators. Ask the team if you are going to run more validators
+
+### Docker Method
+
+1- Open `docker-compose.yml`
+
+```
+cd aztec
+nano docker-compose.yml
+```
+
+2- Update private key:
+
+-   Update `VALIDATOR_PRIVATE_KEY: ${VALIDATOR_PRIVATE_KEY}` under `environment` with the following:
+
+```
+VALIDATOR_PRIVATE_KEYS: ${VALIDATOR_PRIVATE_KEYS}
+```
+
+-   We added `s`
+
+3- Add publisher key variable:
+
+-   Adding a publisher wallet will make you handle all the transactions of your validators with on wallet
+-   Add `SEQ_PUBLISHER_PRIVATE_KEY: ${SEQ_PUBLISHER_PRIVATE_KEY}` somewhere under `environment` in `docker-compose.yml`
+
+4- Open `.env`
+
+```
+nano .env
+```
+
+5- Update private key:
+
+-   Update `VALIDATOR_PRIVATE_KEY` to `VALIDATOR_PRIVATE_KEYS`
+-   Values of `VALIDATOR_PRIVATE_KEYS` must be a comma (`,`) separated list. (`"0x123...,0x234...,0x345..."`)
+
+6- Optional: Add publisher key variable:
+`SEQ_PUBLISHER_PRIVATE_KEY`: The value of this is the privatekey of the wallet positng the transactions. This means you only need to fund sepETH to this wallet if you run multiple validators.
+
+7- Register each validator on the network
+
+-   Do it manually or reach the team.
+
+#
+
+### CLI Method
+
+-   1- Update your CLI start command to use `--sequencer.validatorPrivateKeys` (see added `s`) instead of `--sequencer.validatorPrivateKey` if you want to run multiple validators.
+    -   The value of this should be a comma (`,`) separated list.
+-   2- Optional: Use `--sequencer.publisherPrivateKey` which will be the address the transactions are posted from. This means you only need to fund sepETH to this address if you run multiple validators.
+
+Example:
+
+```
+aztec start --node --archiver --sequencer \
+  --network testnet \
+  --l1-rpc-urls RPC_URL  \
+  --l1-consensus-host-urls BEACON_URL \
+  --sequencer.validatorPrivateKeys "0xPrivatekey1,0xPrivatekey2,0xPrivatekey3" \
+  --sequencer.publisherPrivateKey 0xPrivatekeyX
+  --sequencer.coinbase 0xYourAddress \
+  --p2p.p2pIp IP
+```
+
+-   3- Register each validator on the network
+    -   Do it manually or reach the team.
+
+---
+
+## Troubleshooting:
+
+If you encountered: `ERROR: world-state:block_stream Error processing block stream: Error: Obtained L1 to L2 messages failed to be hashed to the block inHash`
+
+-   You have to stop your node, delete data and restart it.
+-   Follow [Update Node](https://github.com/0xmoei/aztec-network/blob/main/README.md#-update-sequencer-node) steps
+
+---
+
+## Get Guardian Discord Role:
+
+Claim the Guardian role as you are running a Sequencer Node and keep an uptime.
+
+-   To claim:
+
+    -   Go to the `upgrade-role` channel
+    -   Type `/checkip`
+    -   Enter your `IP` & `Node Address`
+
+-   If you are not eligible to claim the Guardian role, wait until the next snapshot.
