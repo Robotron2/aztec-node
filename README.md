@@ -35,7 +35,7 @@ After running and syncing your Sequencer node, You can go through [Get Role](htt
 </table>
 
 -   **Prover Node**: Requiring ~40x machines with 16 cores and 128GB RAM
--   You can skip here.
+-   You should skip prover node as a hustler. As a lover of tech, dig in
 
 ---
 
@@ -125,7 +125,7 @@ aztec-up 2.0.2
 
 **More details on RPC solutions**:
 
-### Get Your Own RPC by Running Geth & Prysm Nodes
+### Get Your Own RPC by Running Geth & Prysm Nodes (The best so far)
 
 -   You can run your own local RPC nodes by following this guide: [geth-prysm-node](https://github.com/0xmoei/geth-prysm-node). You may need 600-1000 GB SSD
 
