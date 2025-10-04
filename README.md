@@ -2,17 +2,20 @@
 
 # Aztec Network Sequencer Node
 
-A step by step guide on How to Run `Sequencer Node` on Aztec Network Testnet & Earn `Apprentice` Role.
+This guide provides a clear, step-by-step process on how to set up and run a **Sequencer Node** on the **Aztec Network Testnet**, and how to earn the **Apprentice** role on Discord.
 
--   **What types of nodes can participate in the testnet?**
-    -   `Sequencer`: proposes blocks, validates blocks from others, and votes on upgrades.
-    -   `Prover`: generates ZK proofs that attest to roll-up integrity.
+## Node Types
 
-## Roles Info
+The Aztec testnet supports two main types of nodes:
 
-Sequecner Nodes will receive a certain role for their contribution on Discord.
+-   **Sequencer**: Proposes new blocks, validates blocks from other nodes, and participates in voting for network upgrades.
+-   **Prover**: Generates zero-knowledge (ZK) proofs to ensure the integrity of the rollup.
 
-After running and syncing your Sequencer node, You can go through [Get Role](https://github.com/0xmoei/aztec-network/blob/main/README.md#get-apprentice-discord-role) step.
+## Roles Information
+
+By successfully running and syncing a Sequencer Node, participants can qualify for a special Discord role that acknowledges their contribution to the network.
+
+Once your node is up and fully synced, proceed to the [Get Apprentice Role](https://github.com/0xmoei/aztec-network/blob/main/README.md#get-apprentice-discord-role) section to claim your role.
 
 ---
 
