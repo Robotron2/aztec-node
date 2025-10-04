@@ -23,7 +23,7 @@ Once your node is up and fully synced, proceed to the [Get Apprentice Role](http
 
 <table>
   <tr>
-    <th colspan="3"> Sequencer Node HW Requirements </th>
+    <th colspan="3">Sequencer Node Hardware Requirements</th>
   </tr>
   <tr>
     <td>RAM</td>
@@ -31,26 +31,26 @@ Once your node is up and fully synced, proceed to the [Get Apprentice Role](http
     <td>Disk</td>
   </tr>
   <tr>
-    <td><code>8-16 GB</code></td>
-    <td><code>4-9 cores</code></td>
+    <td><code>8–16 GB</code></td>
+    <td><code>4–9 cores</code></td>
     <td><code>100+ GB SSD</code></td>
   </tr>
 </table>
 
--   **Prover Node**: Requiring ~40x machines with 16 cores and 128GB RAM
--   You should skip prover node as a hustler. As a lover of tech, dig in
+-   **Prover Node**: Requires approximately 40× machines with **16 cores** and **128 GB RAM** each.
+-   If you’re just exploring or hustling, you can skip the Prover Node for now. But if you're a tech enthusiast, feel free to dive deeper.
 
 ---
 
-**Windows Users**: must run via wsl
-
-**VPS Users(Linux environment)**: can get started via a `VPS` with 4 cores CPU, 8GB RAM! [Purchase here](https://contabo.com/en/)
+**Windows Users:** You’ll need to run the node using **WSL**.  
+**VPS Users (Linux):** You can easily get started with a VPS that has **4 cores** and **8 GB RAM**.  
+👉 [Get a VPS here](https://contabo.com/en/)
 
 ---
 
-## 1. Install Dependecies
+## 1. Install Dependencies
 
--   Update packages:
+First, make sure your packages are up to date:
 
 ```bash
 sudo apt-get update && sudo apt-get upgrade -y
